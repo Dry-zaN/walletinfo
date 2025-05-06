@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Exodus Wallet Tracker</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; }
+        .balance { background: #f5f5f5; padding: 10px; margin: 5px; border-radius: 5px; }
+    </style>
+</head>
+<body>
+    <h1>Exodus Wallet Tracker (Public Balances)</h1>
+    
+    <div id="btc-balance" class="balance">Loading BTC balance...</div>
+    <div id="eth-balance" class="balance">Loading ETH balance...</div>
+
+    <script>
+        // Replace with your PUBLIC wallet addresses (never use private keys!)
+        const BTC_ADDRESS = "1ABC...";
+        const ETH_ADDRESS = "0x123...";
+
+        // Fetch BTC balance from Blockchain.com API
+        fetch(`https://blockchain.info/balance?active=${BTC_ADDRESS}`)
+            .then(res => res.json())
+            .then(data => {
+                const btcBalance = data[BTC_ADDRESS].final_balance / 100000000;
+                document.getElementById("btc-balance").innerHTML = 
+                    `<strong>BTC Balance:</strong> ${btcBalance} BTC`;
+            });
+
+        // Fetch ETH balance from Etherscan API (requires API key)
+        fetch(`https://api.etherscan.io/api?module=account&action=balance&address=${ETH_ADDRESS}&tag=latest`)
+            .then(res => res.json())
+            .then(data => {
+                const ethBalance = data.result / 1e18;
+                document.getElementById("eth-balance").innerHTML = 
+                    `<strong>ETH Balance:</strong> ${ethBalance} ETH`;
+            });
+    </script>
+</body>
+</html>
